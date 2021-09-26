@@ -8,13 +8,13 @@ import {
     createTheme,
     CssBaseline,
     Grid,
-    Link,
     ThemeProvider,
     Toolbar,
     Typography,
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import history from '../../history';
 import { restaurantService, userService } from '../../services';
 
@@ -41,6 +41,22 @@ const Home = () => {
             console.log(error);
         }
     };
+    const fetchFoodsByRestaurantId = async (restaurantId: any) => {
+        try {
+            const data = await restaurantService.getFoodsByRestaurantId(
+                restaurantId
+            );
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // const { restaurantId }: any = useParams;
+
+    // useEffect(() => {
+    //     fetchFoodsByRestaurantId(restaurantId);
+    // });
 
     useEffect(() => {
         fetchAllRestaurant();
@@ -65,7 +81,7 @@ const Home = () => {
                             align="center"
                             noWrap
                         >
-                            Blog
+                            Home
                         </Typography>
 
                         <Button
@@ -84,40 +100,65 @@ const Home = () => {
                         >
                             {restaurants.map(restaurant => {
                                 return (
-                                    <Grid item xs={12} md={6}>
-                                        <CardActionArea component="a" href="#">
-                                            <Card style={{ display: 'flex' }}>
-                                                <CardContent
-                                                    style={{ flex: 1 }}
+                                    <Grid
+                                        onClick={() =>
+                                            fetchFoodsByRestaurantId(
+                                                restaurant._id
+                                            )
+                                        }
+                                        item
+                                        xs={12}
+                                        md={6}
+                                    >
+                                        <Link
+                                            style={{ textDecoration: 'none' }}
+                                            to={`/menu/${restaurant._id}`}
+                                        >
+                                            <CardActionArea
+                                                component="a"
+                                                href="#"
+                                            >
+                                                <Card
+                                                    style={{ display: 'flex' }}
                                                 >
-                                                    <Typography
-                                                        component="h2"
-                                                        variant="h5"
+                                                    <CardContent
+                                                        style={{ flex: 1 }}
                                                     >
-                                                        {restaurant.name}
-                                                    </Typography>
-                                                    <Typography
+                                                        <Typography
+                                                            component="h2"
+                                                            variant="h5"
+                                                        >
+                                                            {restaurant.name}
+                                                        </Typography>
+                                                        <Typography
+                                                            style={{
+                                                                paddingTop:
+                                                                    '30px',
+                                                                fontSize:
+                                                                    'medium',
+                                                            }}
+                                                            variant="subtitle1"
+                                                            paragraph
+                                                        >
+                                                            {
+                                                                restaurant.description
+                                                            }
+                                                        </Typography>
+                                                    </CardContent>
+                                                    <CardMedia
+                                                        component="img"
                                                         style={{
-                                                            paddingTop: '30px',
-                                                            fontSize: 'medium',
+                                                            width: 160,
+                                                            height: 170,
+                                                            display: 'block',
                                                         }}
-                                                        variant="subtitle1"
-                                                        paragraph
-                                                    >
-                                                        {restaurant.description}
-                                                    </Typography>
-                                                </CardContent>
-                                                <CardMedia
-                                                    component="img"
-                                                    style={{
-                                                        width: 160,
-                                                        height: 170,
-                                                        display: 'block',
-                                                    }}
-                                                    image={restaurant.imageUrl}
-                                                />
-                                            </Card>
-                                        </CardActionArea>
+                                                        image={
+                                                            restaurant.imageUrl
+                                                        }
+                                                    />
+                                                </Card>
+                                            </CardActionArea>
+                                        </Link>
                                     </Grid>
                                 );
                             })}

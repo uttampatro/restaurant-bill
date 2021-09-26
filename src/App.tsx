@@ -4,6 +4,7 @@ import HomePage from './components/HomePage';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Register from './pages/register';
 import Login from './pages/login';
+import Menu from './pages/menu';
 
 function App() {
     const userExists = localStorage.getItem('user');
@@ -19,6 +20,7 @@ function App() {
                 <Route path={'/login'} component={Login} />
                 <Route path={'/register'} component={Register} />
                 <Route path={'/home'} component={HomePage} />
+                <Route path={'/menu/:id'} component={Menu} />
             </Switch>
         </div>
     );

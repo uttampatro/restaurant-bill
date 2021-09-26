@@ -12,7 +12,6 @@ ReactDOM.render(
                 <Route path="/" component={App} />
             </Switch>
         </Router>
-        ,
     </React.StrictMode>,
     document.getElementById('root')
 );
